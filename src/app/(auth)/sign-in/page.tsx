@@ -36,41 +36,41 @@ const signInPage = () => {
         redirect: false,
         identifier: data?.identifier,
         password: data?.password
-      })  
-      console.log("response - pro ",response)
+      })
+      console.log("response - pro ", response)
 
-      if(response?.error == "Error: Please verify your account before login"){
+      if (response?.error == "Error: Please verify your account before login") {
         toast({
           title: 'Login Failed',
           description: response?.error,
-          variant:'destructive'
+          variant: 'destructive'
         })
         router.replace(`/verify/${username}`)
         setIsSubmitting(false);
-      }else{
+      } else {
         toast({
           title: 'Login Failed',
           description: response?.error,
-          variant:'destructive'
+          variant: 'destructive'
         })
         setIsSubmitting(false);
       }
 
       // if (response?.error) {
-        // toast({
-        //   title: 'Login Failed',
-        //   description: response?.error,
-        //   variant:'destructive'
-        // })
+      // toast({
+      //   title: 'Login Failed',
+      //   description: response?.error,
+      //   variant:'destructive'
+      // })
       //   router.replace(`/verify/${username}`)
       //   setIsSubmitting(false);
       // }
-      console.log("first",response)
-      if(response?.url){
+      console.log("first", response)
+      if (response?.url) {
         toast({
           title: 'Login Sucess',
           // description: res,
-          variant:'default'
+          variant: 'default'
         })
         router.replace('/dashboard');
         setIsSubmitting(false)
@@ -91,17 +91,18 @@ const signInPage = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className=" w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md ">
-        <div className=" text-center ">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Sign in Page
+    <div className="flex justify-center items-center min-h-screen bg-[#f6f9ff]">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
+        <div className="text-center">
+          <h1 className="text-4xl w-10/12 mx-auto text-center font-bold tracking-tight text-gray-900 lg:text-4xl mb-6">
+            Sign in to Your Account
           </h1>
-          <p className="mb-4">
-            Sign in to start your mystery adventure
+          <p className="text-gray-600 mb-4">
+            Enter your credentials to start your mystery adventure.
           </p>
         </div>
-        <Form {...register} >
+
+        <Form {...register}>
           <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-6">
 
             <FormField
@@ -109,14 +110,19 @@ const signInPage = () => {
               name="identifier"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>identifier</FormLabel>
+                  <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="email" {...field} />
+                    <Input
+                      placeholder="Email"
+                      {...field}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-indigo-500"
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
+
             <FormField
               control={register.control}
               name="password"
@@ -124,25 +130,46 @@ const signInPage = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      {...field}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-indigo-500"
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
-            <Button type="submit">
+
+            <Button
+              type="submit"
+              className="w-full text-gray-800 bg-yellow-400 text-gray-800  py-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 "
+            >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />Please wait
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait...
                 </>
-              ) : ('SignIn')}
+              ) : (
+                'Sign In'
+              )}
             </Button>
-
           </form>
-          <p className=" text-center" >Not Account yet ! <span className=" text-red-300 cursor-pointer" onClick={() => router.push('/sign-up')}>Signup here</span></p>
+
+          <p className="text-center text-sm text-gray-500 mt-4">
+            Don’t have an account?{' '}
+            <span
+              className="text-indigo-500 cursor-pointer hover:underline"
+              onClick={() => router.push('/sign-up')}
+            >
+              Sign up here
+            </span>
+          </p>
         </Form>
       </div>
     </div>
+
   )
 }
 

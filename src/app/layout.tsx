@@ -34,8 +34,8 @@ export default function RootLayout({
       <AuthProvider>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-      {window.location?.pathname.includes('u') ? <></> : <Navbar/>}
+      ><Navbar/>
+      {/* {window.location?.pathname.includes('u') ? <></> : <Navbar/>} */}
       {children}
         <Toaster />
       </body>
