@@ -1,7 +1,6 @@
 'use client'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Message } from '@/model/User';
-import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import { useForm, FormProvider } from 'react-hook-form'; // use this only once
@@ -18,6 +17,9 @@ import MessageCard from '@/components/custom/MessageCard';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
+import { Label } from '@/components/ui/label';
+import { FaMoon, FaSun } from 'react-icons/fa';  // Importing icons from react-icons
+
 
 const Dashboard = () => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -28,7 +30,11 @@ const Dashboard = () => {
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages?.filter((item) => item?._id !== messageId))
   }
+  const [isChecked, setIsChecked] = useState(false as boolean);
 
+  const handleToggle = () => {
+    setIsChecked(!isChecked);
+  };
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { data: session } = useSession();
@@ -63,7 +69,7 @@ const Dashboard = () => {
     finally {
       setSwitchLoading(false)
     }
-  }, [acceptMessages,messages, setValue, toast])
+  }, [acceptMessages, messages, setValue, toast])
 
   const fetchMessages = useCallback(async (refresh: boolean = false) => {
     setIsLoading(true);
@@ -104,6 +110,7 @@ const Dashboard = () => {
 
   // Handle switch changes..
   const handleSwitchChanges = async () => {
+    console.log("OOOO//////")
     try {
       const response = await axios.post<ApiResponse>(`/api/accept-messages`, {
         acceptMessages: !acceptMessages
@@ -127,10 +134,10 @@ const Dashboard = () => {
 
   function copyText() {
     // Get the text field using the ref
-    const copyText = inputRef?.current as HTMLInputElement ;
+    const copyText = inputRef?.current as HTMLInputElement;
 
     // Select the text field
-    if(copyText){
+    if (copyText) {
       copyText.select()
       navigator.clipboard.writeText(copyText.value as string)
     }
@@ -144,42 +151,49 @@ const Dashboard = () => {
   if (!session || !session?.user) {
     return <div>Please Login</div>
   }
-console.log("OOOOOOOOOOOO",messages)
+  console.log("OOOOOOOOOOOO", messages)
+
+
+
   return (
     <FormProvider {...methods}>
-      <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full mx-w-6xl'>
-        <h1 className='text-4xl font-bold mb-4'>User Dashboard</h1>
-        <div className='mb-4'>
-          <Card className="w-full px-5 flex justify-between items-center">
-            <CardHeader>
-              <Input id="name" ref={inputRef} value={userUrl} placeholder="Name of your project" />
-            </CardHeader>
-            <h2 onClick={copyText} className='text-md cursor-pointer font-bold mb-2'>Copy Unique Link</h2>
-          </Card>
+      <div className='py-8 bg-[#f6f9ff] mx-4 md:mx-8 lg:mx-auto p-6  rounded w-full mx-w-6xl'>
+        <h1 className='text-3xl text-yellow-500 font-bold mb-4'>User Dashboard</h1>
+        <div className='mb-4 p-2 bg-white flex justify-between items-center'>
+          <Input id="name" className=' w-10/12 border-white' ref={inputRef} value={userUrl} placeholder="Name of your project" />
+          <button onClick={copyText} className='text-sm h-full cursor-pointer font-bold  text-gray-800 bg-yellow-400 text-gray-800 py-2 px-6 rounded-full px-4  transform hover:scale-105 transition duration-300 text-white hover:bg-yellow-500'>Copy Link</button>
         </div>
+ 
 
-        <div className='mb-4'>
-          <FormField
-            control={control} // Correctly passing control here
-            name="acceptMessages"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                <div className="space-y-0.5">
-                  <FormLabel>Marketing emails</FormLabel>
-                  <FormDescription>
-                    Receive emails about new products, features, and more.
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={acceptMessages}
-                    onCheckedChange={handleSwitchChanges}
-                    disabled={isSwitchLoading}
-                  />
-                </FormControl>
-              </FormItem>
+
+        <div className="flex items-center space-x-4">
+          <label htmlFor="toggle" className="text-gray-600 font-bold">Accept Message</label>
+
+          {/* The toggle icons */}
+          <div className="flex items-center cursor-pointer" >
+            {/* Sun icon for on state */}
+            {acceptMessages ? (
+              <>ON</>
+            ) : (
+              <>OFF</>
             )}
-          />
+          </div>
+
+          {/* Toggle switch for visual effect (optional) */}
+          <div className="relative w-12 h-6">
+            <div
+              className={`w-full h-6 bg-gray-300 rounded-full cursor-pointer
+          ${isChecked ? 'bg-blue-500' : 'bg-gray-300'} 
+          transition-all ease-in-out`}
+              onClick={handleSwitchChanges}
+            >
+              <div
+                className={`w-6 h-6 bg-white rounded-full shadow-md 
+            transform transition-transform ease-in-out 
+            ${acceptMessages ? 'translate-x-6' : 'translate-x-0'}`}
+              />
+            </div>
+          </div>
         </div>
 
         <div>
@@ -199,7 +213,7 @@ console.log("OOOOOOOOOOOO",messages)
           </Button>
         </div>
 
-        <div className='mt-4 grid grid-cols-1 md:grid-cols-2 gap-6'>
+        <div className='mt-4 grid grid-cols-1 md:grid-cols-3 gap-6'>
           {messages?.length > 0 ? (
             messages?.map((message) => {
               return <MessageCard key={message?._id as string} message={message} onMessageDelete={handleDeleteMessage} />

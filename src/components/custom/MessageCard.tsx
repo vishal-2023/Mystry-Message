@@ -47,17 +47,20 @@ const MessageCard = ({key,message,onMessageDelete} :MessageProps) => {
     } 
 
     return (
-        <Card>
+        <Card className='bg-white'>
             <CardHeader>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="destructive">
-                            <X className='w-5 h-5' />
+                        <div className=' flex justify-end'>
+                        <Button className='border w-10 bg-red-500' variant="destructive">
+                            <X className='text-white bg-red-500' />
                         </Button>
+                        </div>
+                        
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent className='bg-white'>
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogTitle>Are you sure want to delete this message ?</AlertDialogTitle>
                             <AlertDialogDescription>
                             {message?.content}
                             </AlertDialogDescription>
@@ -68,8 +71,9 @@ const MessageCard = ({key,message,onMessageDelete} :MessageProps) => {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
-                <CardDescription>{message?.content}</CardDescription>
-            </CardHeader>
+                <CardDescription className='text-xl font-bold'>{message?.content}</CardDescription>
+                <div>{new Date(message?.createdAt).toLocaleString()}</div>
+                </CardHeader>
             <CardContent>
             </CardContent>
         </Card>

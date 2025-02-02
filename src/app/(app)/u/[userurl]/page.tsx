@@ -1,7 +1,7 @@
 'use client'
 import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -24,7 +24,7 @@ import { ApiResponse } from '@/types/ApiResponse';
 const page = () => {
     const { userurl } = useParams<{ userurl: string }>();
     console.log("ppp", userurl)
-
+const router = useRouter();
     const FormSchema = z.object({
         bio: z
             .string()
@@ -96,7 +96,8 @@ const page = () => {
 
     return (
         <div>
-            <h2 className=' text-3xl font-semibold text-center my-10'>Public Profile Link</h2>
+            <h2 className=' text-3xl font-semibold text-yellow-500 text-center my-10'>Public Profile Link</h2>
+            
             <div className=' w-[60%] mx-auto'>
                 <p className=' text-lg font-bold'>Send Anonymous Message to {userurl} </p>
                 <Form {...form}>
@@ -121,7 +122,9 @@ const page = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Submit</Button>
+                        <div className=' flex justify-center'>
+                        <Button className='mx-auto rounded-md text-gray-800 bg-yellow-400 text-gray-800  py-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 text-white' type="submit">Send it</Button>
+                        </div>
                     </form>
                 </Form>
 
@@ -138,6 +141,13 @@ const page = () => {
                     </div>
                 </div>
             </div>
+            <div className='text-black text-center mt-10'>
+                <p className='font-semibold'>Get Your Message Board</p>
+                <button onClick={() => router.push('/')} className='mx-auto rounded-md text-gray-800 bg-yellow-400 text-gray-800 my-2 rounded-md  p-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 text-white' type="submit">
+                    Create Your Account
+                </button>
+            </div>
+           
 
         </div>
     )
