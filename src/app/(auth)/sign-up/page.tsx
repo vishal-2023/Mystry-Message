@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import Link from "next/link"
+// import Link from "next/link"
 import { useDebounceCallback } from 'usehooks-ts'
 import axios, { AxiosError } from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast"
 import { signUpSchema } from "@/schemas/signUpSchema"
 import { ApiResponse } from "@/types/ApiResponse"
 import { useRouter } from "next/navigation"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"

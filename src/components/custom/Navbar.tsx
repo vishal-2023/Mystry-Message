@@ -6,7 +6,7 @@ import { User } from 'next-auth';
 
 
 const Navbar = () => {
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
     const user: User = session?.user;
 
     return (

@@ -1,25 +1,9 @@
 'use client'
 import Image from "next/image";
 import Link from "next/link";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import Autoplay from "embla-carousel-autoplay"
 
-const arr = [
-  {
-    img: "https://images.unsplash.com/photo-1488998287214-1e668a8e0dc4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  },
-  {
-    img: "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWVzc2FnZXxlbnwwfHwwfHx8MA%3D%3D"
-  },
-  // {
-  //   // img:"https://images.unsplash.com/photo-1569144157581-984dea473e3b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG1lc3NhZ2V8ZW58MHx8MHx8fDA%3D"
-  // },
-  {
-    img: "https://images.unsplash.com/photo-1569323110215-7c47e05529bc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D"
-  }
-]
+
 
 export default function Home() {
   return (

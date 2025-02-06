@@ -8,49 +8,44 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { acceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Switch } from '@/components/ui/switch';
+// import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+// import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Loader2, RefreshCcw } from 'lucide-react';
 import MessageCard from '@/components/custom/MessageCard';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+// import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useRouter } from 'next/navigation';
-import { Label } from '@/components/ui/label';
-import { FaMoon, FaSun } from 'react-icons/fa';  // Importing icons from react-icons
+// import { useRouter } from 'next/navigation';
+// import { Label } from '@/components/ui/label';
+// import { FaMoon, FaSun } from 'react-icons/fa';  // Importing icons from react-icons
 
 
 const Dashboard = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSwitchLoading, setSwitchLoading] = useState<boolean>(false);
   const { toast } = useToast();
-  const fullUrl = typeof window !== "undefined" ? window.location.href : '';
+  // const fullUrl = typeof window !== "undefined" ? window.location.href : '';
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages?.filter((item) => item?._id !== messageId))
   }
-  const [isChecked, setIsChecked] = useState(false as boolean);
 
-  const handleToggle = () => {
-    setIsChecked(!isChecked);
-  };
+  
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { data: session } = useSession();
-  console.log("sssee", session)
+  // console.log("sssee", session)
   // console.log("ww",window.location?.origin+session?.user?.username)
   const userUrl = `${window.location?.origin}/u/${session?.user?.username}`
   console.log("ooo", userUrl)
   const methods = useForm({
     resolver: zodResolver(acceptMessageSchema),
   });
-  const { control, watch, setValue } = methods;
+  const {  watch, setValue } = methods;
 
   const acceptMessages = watch('acceptMessages');
 
   const fetchAcceptMessages = useCallback(async () => {
-    setSwitchLoading(true);
     try {
       const response = await axios.get('/api/accept-messages')
       if (response?.data) {
@@ -58,22 +53,19 @@ const Dashboard = () => {
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data?.message;
-      console.log("ee", errorMessage)
+      const errorMessage = axiosError.response?.data?.message;
       toast({
         title: 'signup failed',
         description: errorMessage,
         variant: 'destructive'
       })
+    } finally {
     }
-    finally {
-      setSwitchLoading(false)
-    }
-  }, [acceptMessages, messages, setValue, toast])
+  }, [setValue, toast]); // Add `setValue` and `toast` to the dependency array
+
 
   const fetchMessages = useCallback(async (refresh: boolean = false) => {
     setIsLoading(true);
-    setSwitchLoading(true)
 
     try {
       const response = await axios.get<ApiResponse>(`/api/get-messages`);
@@ -88,8 +80,8 @@ const Dashboard = () => {
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data?.message;
-      console.log("ee", errorMessage)
+      const errorMessage = axiosError.response?.data?.message;
+      // console.log("ee", errorMessage)
       toast({
         title: 'signup failed',
         description: errorMessage || "Failed to fetch messages settings",
@@ -98,15 +90,14 @@ const Dashboard = () => {
     }
     finally {
       setIsLoading(false);
-      setSwitchLoading(false)
     }
-  }, [setIsLoading, setMessages])
+  }, [setIsLoading, setMessages,toast])
 
   useEffect(() => {
     if (!session || !session?.user?._id) return;
     fetchMessages();
     fetchAcceptMessages()
-  }, [session, setValue])
+  }, [session, setValue, fetchAcceptMessages,fetchMessages])
 
   // Handle switch changes..
   const handleSwitchChanges = async () => {
@@ -122,8 +113,8 @@ const Dashboard = () => {
       })
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data?.message;
-      console.log("ee", errorMessage)
+      const errorMessage = axiosError.response?.data?.message;
+      // console.log("ee", errorMessage)
       toast({
         title: 'signup failed',
         description: errorMessage,
@@ -184,7 +175,6 @@ const Dashboard = () => {
           <div className="relative w-12 h-6">
             <div
               className={`w-full h-6 bg-gray-300 rounded-full cursor-pointer
-          ${isChecked ? 'bg-blue-500' : 'bg-gray-300'} 
           transition-all ease-in-out`}
               onClick={handleSwitchChanges}
             >

@@ -5,7 +5,6 @@ import "./globals.css";
 import AuthProvider from "./context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster"
 import Navbar from "@/components/custom/Navbar";
-import { CloudCog } from "lucide-react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
