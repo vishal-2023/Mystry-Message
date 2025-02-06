@@ -31,7 +31,7 @@ export default function Home() {
           <div className="h-full w-1/2 flex  flex-col items-center my-">
           <div className=" text-black w-full  h-full z-10 py-20 h-full  ">
             <h1 className="text-4xl text-yellow-400 w-10/12 mx-auto text-center text-blue-600 font-bold leading-tight">A place to send  meaningful message to your friends</h1>
-            <p className=" text-center w-9/12 mx-auto my-10">Connect with your friends and family, build your community and deepen your interests.</p>
+            <p className=" text-center w-9/12 mx-auto my-10">Connect with your friends and family to get true feedback, build your community and deepen your interests.</p>
             <p className="mt-4 text-lg">A next-gen web app built with Next.js</p>
             <Link href="#features">
               <Button variant="outline" className="mt-6 inline-block bg-yellow-400 text-gray-800 py-2 px-6 rounded-full transform hover:scale-105 transition duration-300 hover:bg-yellow-500">
@@ -91,17 +91,17 @@ export default function Home() {
         <h2 className="text-3xl font-semibold mb-8">App Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 px-4">
           <div className="bg-gray-100 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
-            <h3 className="text-xl font-bold">Real-Time Messaging</h3>
-            <p className="mt-4">Stay connected with friends, family, and colleagues through seamless, real-time messaging. Whether it’s a quick text, a voice message, or an important document, our app ensures that messages are delivered instantly with no delay. Share images, videos, and files effortlessly, all while enjoying a smooth, secure, and private chat experience. With end-to-end encryption, you can be confident your conversations are always safe. Plus, enjoy group chats, message reactions, and notifications so you never miss an important message.</p>
+            <h3 className="text-xl font-bold text-yellow-500">Control Your Messaging</h3>
+            <p className="mt-4">Getting messages in your control , basically you have an option whether you want to accept message from your friends</p>
           </div>
           <div className="bg-gray-100 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
-            <h3 className="text-xl font-bold">Feature Two</h3>
-            <p className="mt-4">Another great feature of the app that users love.</p>
-          </div>
+            <h3 className="text-xl font-bold text-yellow-500">Get Genuine Feedback</h3>
+            <p className="mt-4">Easily gather real opinions from your users to enhance your offerings and build trust.</p>
+            </div>
           <div className="bg-gray-100 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
-            <h3 className="text-xl font-bold">Feature Three</h3>
-            <p className="mt-4">The third feature that makes your web app stand out in the crowd.</p>
-          </div>
+            <h3 className="text-xl font-bold text-yellow-500">Get Message Suggestion</h3>
+            <p className="mt-4">Generate effective message suggestions to streamline your communication and enhance user experience.</p>
+            </div>
         </div>
       </section>
 

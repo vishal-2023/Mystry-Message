@@ -2,7 +2,7 @@
 import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {
@@ -23,8 +23,9 @@ import { ApiResponse } from '@/types/ApiResponse';
 
 const page = () => {
     const { userurl } = useParams<{ userurl: string }>();
-    console.log("ppp", userurl)
-const router = useRouter();
+    const [message, setMessage] = useState<string | null>(null)
+    // console.log("ppp", userurl)
+    const router = useRouter();
     const FormSchema = z.object({
         bio: z
             .string()
@@ -35,6 +36,7 @@ const router = useRouter();
                 message: "message must not be longer than 30 characters.",
             }),
     })
+    const [loading,setIsLoading] = useState<boolean>(false)
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -61,7 +63,7 @@ const router = useRouter();
                 description: errorMessage,
                 variant: 'destructive'
             })
-        }finally {
+        } finally {
             // Correctly calling the reset method here
             form.reset({
                 bio: "", // Resetting the bio field
@@ -70,26 +72,27 @@ const router = useRouter();
     }
 
     const suggestMessage = async () => {
+        setIsLoading(true)
         // const messages = "Generate a list of 10 questions or statements that encourage someone to share personal thoughts, reflections, or experiences."
         try {
-            const response = await axios.post(`/api/suggest-messages`, 
+            const response = await axios.post(`/api/suggest-messages`,
                 {
-                    "messages": [
-                      { "role": "system", "content": "You are a helpful assistant." },
-                      { "role": "user", "content": "What is the weather like today?" }
-                    ]
-                  }
-                  
+                    "messages": "suggest feedback message to send the friends general talk "
+                }
+
             )
+            setMessage(response?.data.message)
             console.log(response?.data, "chatgpt response..")
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
             let errorMessage = axiosError.response?.data?.message;
             toast({
-                title: 'Network failed',
+                title: 'Success failed',
                 description: errorMessage,
                 variant: 'destructive'
             })
+        }finally{
+            setIsLoading(false)
         }
 
     }
@@ -97,7 +100,7 @@ const router = useRouter();
     return (
         <div>
             <h2 className=' text-3xl font-semibold text-yellow-500 text-center my-10'>Public Profile Link</h2>
-            
+
             <div className=' w-[60%] mx-auto'>
                 <p className=' text-lg font-bold'>Send Anonymous Message to {userurl} </p>
                 <Form {...form}>
@@ -115,28 +118,24 @@ const router = useRouter();
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormDescription>
-                                        You can <span>@mention</span> other users and organizations.
-                                    </FormDescription>
-                                    <FormMessage />
+                                    <FormMessage className='text-red-500' />
                                 </FormItem>
                             )}
                         />
                         <div className=' flex justify-center'>
-                        <Button className='mx-auto rounded-md text-gray-800 bg-yellow-400 text-gray-800  py-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 text-white' type="submit">Send it</Button>
+                            <Button className='mx-auto rounded-md text-gray-800 bg-yellow-400 text-gray-800  py-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 text-white' type="submit">Send it</Button>
                         </div>
                     </form>
                 </Form>
 
                 <div>
-                    <Button onClick={suggestMessage} className=' my-3'> Suggest Messages </Button>
-                    <p>Click on any message below to select it</p>
+                    <Button onClick={suggestMessage} className=' my-3'> {loading ? 'Please wait' : 'Suggest Messages'} </Button>
+                    {/* <p className='text-sm'> </p> */}
                     <div className=' my-3'>
-                        <Card className="w-full py-5">
-                            <Textarea
-                                placeholder="Tell us a little bit about yourself"
-                                className="resize-none w-10/12 mx-auto"
-                            />
+                        <Card className="w-full p-3">
+                            <div style={{ whiteSpace: 'pre-wrap' }}>
+                                <p>{message??'messages'}</p>
+                            </div>
                         </Card>
                     </div>
                 </div>
@@ -147,7 +146,7 @@ const router = useRouter();
                     Create Your Account
                 </button>
             </div>
-           
+
 
         </div>
     )
