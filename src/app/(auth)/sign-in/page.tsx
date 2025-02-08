@@ -32,9 +32,10 @@ const SignInPage = () => {
     try {
       const response = await signIn('credentials', {
         redirect: false,
-        identifier: data?.identifier,
+        username: data?.identifier,
         password: data?.password
       })
+      console.log("ress",response)  
 
       if (response?.error == "Error: Please verify your account before login") {
         toast({

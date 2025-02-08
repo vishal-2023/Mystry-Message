@@ -17,12 +17,14 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: Record<"username" | "password", string> | undefined): Promise<InstanceType<typeof User> | null> {  // Using InstanceType to get the instance type of User model
         await dbConnect();
         try {
+          // console.log("cred",credentials);
           const user = await User.findOne({
             $or: [
               { email: credentials?.username },
               { username: credentials?.username }
             ]
           });
+          // console.log("uss",user);
           if (!user) {
             throw new Error("No user found with this email");
           }
