@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 // import img from '/images/fbImg.png'
+import img from '../../public/images/fbImg.png'
 export default function Home() {
   return (
     <div className="bg-gray-50 font-sans text-gray-800">
@@ -24,7 +25,7 @@ export default function Home() {
           </div>
 
           <div className="w-1/2 h-full">
-            <Image className=" w-full h-full" src="/images/fbImg.png" width={500} height={500} alt="img" />
+            <Image className=" w-full h-full" src={img} width={500} height={500} alt="img" />
           </div>
         </div>
       </header>
