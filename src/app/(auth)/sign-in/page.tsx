@@ -2,8 +2,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-// import Link from "next/link"
-import  { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import React, { useState } from 'react'
 import { useToast } from "@/hooks/use-toast"
 import { ApiResponse } from "@/types/ApiResponse"
@@ -15,12 +14,11 @@ import { Loader2 } from "lucide-react"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from 'next-auth/react'
 
-const signInPage = () => {
-  const [username, setUsername] = useState('');
+const SignInPage = () => { 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  // zod implementation
+
   const register = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -37,7 +35,6 @@ const signInPage = () => {
         identifier: data?.identifier,
         password: data?.password
       })
-      console.log("response - pro ", response)
 
       if (response?.error == "Error: Please verify your account before login") {
         toast({
@@ -45,7 +42,7 @@ const signInPage = () => {
           description: response?.error,
           variant: 'destructive'
         })
-        router.replace(`/verify/${username}`)
+        router.replace(`/verify/${data.identifier}`)
         setIsSubmitting(false);
       } else {
         toast({
@@ -56,20 +53,9 @@ const signInPage = () => {
         setIsSubmitting(false);
       }
 
-      // if (response?.error) {
-      // toast({
-      //   title: 'Login Failed',
-      //   description: response?.error,
-      //   variant:'destructive'
-      // })
-      //   router.replace(`/verify/${username}`)
-      //   setIsSubmitting(false);
-      // }
-      console.log("first", response)
       if (response?.url) {
         toast({
-          title: 'Login Sucess',
-          // description: res,
+          title: 'Login Success',
           variant: 'default'
         })
         router.replace('/dashboard');
@@ -78,16 +64,14 @@ const signInPage = () => {
 
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data?.message;
-      console.log("ee", errorMessage)
+      const errorMessage = axiosError.response?.data?.message; // Use const here
       toast({
-        title: 'signup failed',
+        title: 'Signup Failed',
         description: errorMessage,
         variant: 'destructive'
       })
       setIsSubmitting(false);
     }
-    // console.log(data)
   }
 
   return (
@@ -144,7 +128,7 @@ const signInPage = () => {
 
             <Button
               type="submit"
-              className="w-full text-gray-800 bg-yellow-400 text-gray-800  py-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 "
+              className="w-full text-gray-800 bg-yellow-400 text-gray-800 py-2 rounded-md transform hover:scale-95 transition duration-300 hover:bg-yellow-500 "
             >
               {isSubmitting ? (
                 <>
@@ -169,8 +153,7 @@ const signInPage = () => {
         </Form>
       </div>
     </div>
-
   )
 }
 
-export default signInPage;
+export default SignInPage; // Export updated component name

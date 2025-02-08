@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
@@ -13,10 +13,10 @@ import { useToast } from '@/hooks/use-toast';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const {toast} = useToast()
-  const params = useParams<{ username: string }>();
+  const params = router.query;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   
   const register = useForm<z.infer<typeof verifySchema>>({
@@ -44,8 +44,8 @@ const page = () => {
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data?.message;
-      console.log("ee", errorMessage)
+      const errorMessage = axiosError.response?.data?.message;
+      // console.log("ee", errorMessage)
       toast({
         title: 'signup failed',
         description: errorMessage,
@@ -96,4 +96,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

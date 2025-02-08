@@ -30,14 +30,19 @@ const Dashboard = () => {
     setMessages(messages?.filter((item) => item?._id !== messageId))
   }
 
-  
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // This will set `isClient` to true once the component is mounted on the client side
+  }, []);
+
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { data: session } = useSession();
   // console.log("sssee", session)
   // console.log("ww",window.location?.origin+session?.user?.username)
-  const userUrl = `${window.location?.origin}/u/${session?.user?.username}`
-  console.log("ooo", userUrl)
+  // const userUrl = `${window.location?.origin}/u/${session?.user?.username}`
+  // console.log("ooo", userUrl)
   const methods = useForm({
     resolver: zodResolver(acceptMessageSchema),
   });
@@ -151,7 +156,10 @@ const Dashboard = () => {
       <div className='py-8 bg-[#f6f9ff] mx-4 md:mx-8 lg:mx-auto p-6  rounded w-full mx-w-6xl'>
         <h1 className='text-3xl text-yellow-500 font-bold mb-4'>User Dashboard</h1>
         <div className=' p-2 bg-white flex justify-between items-center'>
-          <Input id="name" className=' w-10/12 border-white' ref={inputRef} value={userUrl} placeholder="Name of your project" />
+          {
+            isClient && 
+            <Input id="name" className=' w-10/12 border-white' ref={inputRef} value={ `${window.location?.origin}/u/${session?.user?.username}`} placeholder="Name of your project" />
+          }
           <button onClick={copyText} className='text-sm h-full cursor-pointer font-bold  text-gray-800 bg-yellow-400 text-gray-800 py-2 px-6 rounded-full px-4  transform hover:scale-105 transition duration-300 text-white hover:bg-yellow-500'>Copy Link</button>
         </div>
         <div className='mb-4 text-sm px-2 text-yellow-400'>Share this link with freinds or user to get genuine feedback</div>

@@ -8,10 +8,10 @@ export async function DELETE(request: Request, { params }: { params: { messageId
     await dbConnect()
     console.log("TTTTTTTTTTTT")
     const session = await getServerSession(authOptions);
-    console.log("session--del",session)
+    console.log("session--del", session)
 
     const user: User = session?.user;
-    console.log("ussss--del",user)
+    console.log("ussss--del", user)
     if (!session || !user) {
         return Response.json({
             success: false,
@@ -20,7 +20,7 @@ export async function DELETE(request: Request, { params }: { params: { messageId
     }
 
     const messageId = params.messageId
-console.log("m-id",messageId)
+    console.log("m-id", messageId)
     try {
 
         // UserModel.findByIdAndUpdate({_id:user?._id},{
@@ -34,12 +34,12 @@ console.log("m-id",messageId)
         },
             {
                 $pull: {
-                    messages: messageId 
+                    messages: messageId
                 }
             }
         )
-        console.log("up",updateResult);
-        if(updateResult.modifiedCount === 0){
+        console.log("up", updateResult);
+        if (updateResult.modifiedCount === 0) {
             return Response.json({
                 success: false,
                 message: 'message not found or already deleted'
@@ -51,11 +51,19 @@ console.log("m-id",messageId)
             message: 'message deleted successfully'
         }, { status: 200 })
 
-    } catch (error) {
-        return Response.json({
-            status: false,
-            message: "Internal Server Error"
-        }, { status: 500 })
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            return Response.json({
+                status: false,
+                message: err.message || "Internal Server Error"
+            }, { status: 500 });
+        } else {
+            // If err is not an instance of Error, handle it appropriately
+            return Response.json({
+                status: false,
+                message: "Internal Server Error"
+            }, { status: 500 });
+        }
     }
 
 }

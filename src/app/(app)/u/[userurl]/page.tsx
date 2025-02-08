@@ -1,7 +1,7 @@
 'use client'
 import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,12 +19,11 @@ import { Card } from '@/components/ui/card';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
 
-
-const page = () => {
-    const { userurl } = useParams<{ userurl: string }>();
-    const [message, setMessage] = useState<string | null>(null)
-    // console.log("ppp", userurl)
+const Page = () => {
+    const [message, setMessage] = useState<string | null>(null);
     const router = useRouter();
+    const { userurl } = router?.query;
+
     const FormSchema = z.object({
         bio: z
             .string()
@@ -32,36 +31,37 @@ const page = () => {
                 message: "message must be at least 10 characters.",
             })
             .max(160, {
-                message: "message must not be longer than 30 characters.",
+                message: "message must not be longer than 160 characters.",
             }),
-    })
-    const [loading,setIsLoading] = useState<boolean>(false)
+    });
+
+    const [loading, setIsLoading] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
-    })
+    });
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         try {
             const response = await axios.post('/api/send-messages', {
                 username: userurl,
-                content: data?.bio
-            })
+                content: data?.bio,
+            });
 
             if (response?.data) {
                 toast({
                     title: response?.data?.message,
-                    variant: "default"
-                })
+                    variant: "default",
+                });
             }
         } catch (error) {
-            const axiosError = error as AxiosError<ApiResponse>
-            let errorMessage = axiosError.response?.data?.message;
+            const axiosError = error as AxiosError<ApiResponse>;
+            const errorMessage = axiosError.response?.data?.message;
             toast({
                 title: 'Network failed',
                 description: errorMessage,
-                variant: 'destructive'
-            })
+                variant: 'destructive',
+            });
         } finally {
             // Correctly calling the reset method here
             form.reset({
@@ -71,30 +71,25 @@ const page = () => {
     }
 
     const suggestMessage = async () => {
-        setIsLoading(true)
-        // const messages = "Generate a list of 10 questions or statements that encourage someone to share personal thoughts, reflections, or experiences."
+        setIsLoading(true);
         try {
-            const response = await axios.post(`/api/suggest-messages`,
-                {
-                    "messages": "suggest feedback message to send the friends general talk "
-                }
-
-            )
-            setMessage(response?.data.message)
-            console.log(response?.data, "chatgpt response..")
+            const response = await axios.post(`/api/suggest-messages`, {
+                "messages": "suggest feedback message to send the friends general talk ",
+            });
+            setMessage(response?.data.message);
+            console.log(response?.data, "chatgpt response..");
         } catch (error) {
-            const axiosError = error as AxiosError<ApiResponse>
-            let errorMessage = axiosError.response?.data?.message;
+            const axiosError = error as AxiosError<ApiResponse>;
+            const errorMessage = axiosError.response?.data?.message;
             toast({
                 title: 'Success failed',
                 description: errorMessage,
-                variant: 'destructive'
-            })
-        }finally{
-            setIsLoading(false)
+                variant: 'destructive',
+            });
+        } finally {
+            setIsLoading(false);
         }
-
-    }
+    };
 
     return (
         <div>
@@ -129,11 +124,10 @@ const page = () => {
 
                 <div>
                     <Button onClick={suggestMessage} className=' my-3'> {loading ? 'Please wait' : 'Suggest Messages'} </Button>
-                    {/* <p className='text-sm'> </p> */}
                     <div className=' my-3'>
                         <Card className="w-full p-3">
                             <div style={{ whiteSpace: 'pre-wrap' }}>
-                                <p>{message??'messages'}</p>
+                                <p>{message ?? 'messages'}</p>
                             </div>
                         </Card>
                     </div>
@@ -145,10 +139,8 @@ const page = () => {
                     Create Your Account
                 </button>
             </div>
-
-
         </div>
-    )
-}
+    );
+};
 
-export default page
+export default Page;

@@ -1,46 +1,3 @@
-// 'use server'
-// import nodemailer from 'nodemailer'
-// import { ApiResponse } from '@/types/ApiResponse'
-// import VerificationEmail from '../../../emails/verificationEmail'
-// import { renderToStaticMarkup } from 'react-dom/server';
-
-// const sendVerificationEmail = async(email:string,username:string,verifycode:string) : Promise<ApiResponse> => {
-//     try{
-//         const transporter = nodemailer.createTransport({
-//             host: 'smtp.forwardemail.net',
-//             port: 465,
-//             secure: true,
-//             auth: {
-//               user: 'my_user',
-//               pass: 'my_password',
-//             },
-//           });
-          
-//           const emailHtml = renderToStaticMarkup(
-//             <VerificationEmail username={username} otp={verifycode} />
-//           );          
-//           const options = {
-//             from: 'you@example.com',
-//             to: email,
-//             subject: 'Verification Code from  Mystery-App',
-//             html: emailHtml,
-//           };
-          
-//           await transporter.sendMail(options);
-//         return {
-//             success:true,
-//             message:"Email send seccessfully"
-//         }
-//     }catch(error){
-//         return {
-//             success:false,
-//             message:"Failed to send verificaiton email"
-//         }
-//     }
-// }
-
-// export default sendVerificationEmail;
-
 import nodemailer from 'nodemailer';
 import { ApiResponse } from '@/types/ApiResponse';
 
@@ -105,6 +62,7 @@ const sendVerificationEmail = async (email: string, username: string, verifycode
       message: 'Email sent successfully',
     };
   } catch (error) {
+    console.log(error,"email err")
     return {
       success: false,
       message: 'Failed to send verification email',

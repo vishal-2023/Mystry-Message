@@ -32,7 +32,7 @@ type MessageProps = {
     onMessageDelete : (id:string) => void
 }
 
-const MessageCard = ({key,message,onMessageDelete} :MessageProps) => {
+const MessageCard = ({message,onMessageDelete} :MessageProps) => {
     // console.log("mmm",message)
     const {toast} = useToast();
     const handleDeleteConfirm  = async() => {
