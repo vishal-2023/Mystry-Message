@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import img from '../../src/app/helpers/fbImg.png'
+// import img from '/images/fbImg.png'
 export default function Home() {
   return (
     <div className="bg-gray-50 font-sans text-gray-800">
@@ -24,14 +24,7 @@ export default function Home() {
           </div>
 
           <div className="w-1/2 h-full">
-          {/* <Image
-              src="https://scontent-ord5-1.xx.fbcdn.net/v/t39.8562-6/464194964_918739083469786_5620917285767761514_n.png?_nc_cat=1&ccb=1-7&_nc_sid=f537c7&_nc_ohc=Gd2mAzgtoM4Q7kNvgEY30RI&_nc_zt=14&_nc_ht=scontent-ord5-1.xx&_nc_gid=AuGkj32Lnr670B5qQxyfN32&oh=00_AYDoQ9JV2nvDYu2PAc5RJO4oY6bDETg2SFjD4ULyLegweQ&oe=67A4F53B"
-              alt="Image description"
-              width={800}  // Set your image width
-              height={450} // Set your image height to maintain aspect ratio
-              className="w-full h-full object-cover"
-            /> */}
-            <Image className=" w-full h-full" src={img} alt=" " />
+            <Image className=" w-full h-full" src="/images/fbImg.png" width={500} height={500} alt="img" />
           </div>
         </div>
       </header>
