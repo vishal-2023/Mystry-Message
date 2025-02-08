@@ -2,6 +2,7 @@
 import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -22,7 +23,7 @@ import { ApiResponse } from '@/types/ApiResponse';
 const Page = () => {
     const [message, setMessage] = useState<string | null>(null);
     const router = useRouter();
-    const { userurl } = router?.query;
+    const { userurl } = useParams();
 
     const FormSchema = z.object({
         bio: z
