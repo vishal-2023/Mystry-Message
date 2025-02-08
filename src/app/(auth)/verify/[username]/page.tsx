@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
@@ -12,11 +12,12 @@ import * as z from "zod"
 import { useToast } from '@/hooks/use-toast';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
+import { useParams } from 'next/navigation'
 
 const Page = () => {
   const router = useRouter();
   const {toast} = useToast()
-  const params = router.query;
+  const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   
   const register = useForm<z.infer<typeof verifySchema>>({
